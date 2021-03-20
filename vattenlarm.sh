@@ -18,7 +18,7 @@ then
     echo "`date '+%F %H:%M'` $msg" >> "$alarm_log"
     if [ `expr $(date +%s) - $(stat -c %Y "$locks/leak.lock") \> 3600` ]
     then
-        echo "`date`\n$msg" | mail -s "[Expansionskärl] $msg" "$email"
+        echo "`date`    $msg" | mail -s "[Expansionskärl] $msg" "$email"
 	touch "$locks/leak.lock"
     fi
 fi
@@ -28,7 +28,7 @@ then
     echo "`date '+%F %H:%M'` $msg" >> "$alarm_log"
     if [ `expr $(date +%s) - $(stat -c %Y "$locks/level1.lock") \> 3600` ]
     then
-        echo "`date`\n$msg" | mail -s "[Expansionskärl] $msg" "$email"
+        echo "`date`    $msg" | mail -s "[Expansionskärl] $msg" "$email"
 	touch "$locks/level1.lock"
     fi
 elif [ $nowLevel -lt 50 ]
@@ -37,7 +37,7 @@ then
     echo "`date '+%F %H:%M'` $msg" >> "$alarm_log"
     if [ `expr $(date +%s) - $(stat -c %Y "$locks/level2.lock") \> 3600 \* 24` ]
     then
-        echo "`date`\n$msg" | mail -s "[Expansionskärl] $msg" "$email"
+        echo "`date`    $msg" | mail -s "[Expansionskärl] $msg" "$email"
 	touch "$locks/level2.lock"
     fi
 fi
