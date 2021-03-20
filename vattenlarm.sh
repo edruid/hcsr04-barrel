@@ -16,28 +16,28 @@ if [ $diff -lt -40 ]
 then
     msg="Läckagelarm: $diff l på 10 timmar! Från $thenLevel till $nowLevel liter."
     echo "`date '+%F %H:%M'` $msg" >> "$alarm_log"
-    if [ `expr $(date +%s) - $(stat -c %Y "$locks/leak.lock") \> 3600` ]
+    if [ `expr $(date +%s) - $(stat -c %Y "$locks/leak.lock")` -gt 3600 ]
     then
         echo "`date`    $msg" | mail -s "[Expansionskärl] $msg" "$email"
-	touch "$locks/leak.lock"
+        touch "$locks/leak.lock"
     fi
 fi
 if [ $nowLevel -lt 40 ]
 then
     msg="Kritisk nivå larm: $nowLevel l kvar!"
     echo "`date '+%F %H:%M'` $msg" >> "$alarm_log"
-    if [ `expr $(date +%s) - $(stat -c %Y "$locks/level1.lock") \> 3600` ]
+    if [ `expr $(date +%s) - $(stat -c %Y "$locks/level1.lock")` -gt  3600` ]
     then
         echo "`date`    $msg" | mail -s "[Expansionskärl] $msg" "$email"
-	touch "$locks/level1.lock"
+        touch "$locks/level1.lock"
     fi
 elif [ $nowLevel -lt 50 ]
 then
     msg="Låg nivå larm: $nowLevel l kvar!"
     echo "`date '+%F %H:%M'` $msg" >> "$alarm_log"
-    if [ `expr $(date +%s) - $(stat -c %Y "$locks/level2.lock") \> 3600 \* 24` ]
+    if [ `expr $(date +%s) - $(stat -c %Y "$locks/level2.lock")` -gt  86400` ]
     then
         echo "`date`    $msg" | mail -s "[Expansionskärl] $msg" "$email"
-	touch "$locks/level2.lock"
+        touch "$locks/level2.lock"
     fi
 fi
