@@ -7,8 +7,8 @@ static const int _pin_trig = 18;
 static const int _pin_echo = 23;
 
 // Change these variables for the size of your barrel
-static const int _barrel_volume = 250
-static const int _barrel_liters_per_mm = 0.267
+static const int _barrel_volume = 250;
+static const int _barrel_liters_per_mm = 0.267;
 
 static void _start(int gpio, int level, uint32_t tick, void* user)
 {
