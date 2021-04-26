@@ -2,8 +2,13 @@
 #include <stdio.h>
 #include <pigpio.h>
 
+// Change these to the pins you actually connected to.
 static const int _pin_trig = 18;
 static const int _pin_echo = 23;
+
+// Change these variables for the size of your barrel
+static const int _barrel_volume = 250
+static const int _barrel_liters_per_mm = 0.267
 
 static void _start(int gpio, int level, uint32_t tick, void* user)
 {
@@ -56,7 +61,7 @@ int main(int argc, char *argv[])
 	timeinfo = localtime(&rawtime);
 	strftime(datestr, sizeof(datestr), "%Y-%m-%d %T", timeinfo);
 	distance = millis*0.1715;
-	liters = 250 - millis * 0.1715 * 0.267;
+	liters = _barrel_volume - millis * 0.1715 * _barrel_liters_per_mm;
 	printf("%s\t%i\t%i\n", datestr, distance, liters);
 
 	return 0;
