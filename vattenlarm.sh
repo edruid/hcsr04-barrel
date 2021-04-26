@@ -13,9 +13,9 @@ thenLevel=`grep "$compareDate" -C 2 "$file" | awk '{print $4}' | sort -n | head 
 diff=`expr $nowLevel - $thenLevel`
 echo $diff
 
-if [ $diff -lt -40 ]
+if [ $diff -lt -50 ]
 then
-    msg="Läckagelarm: $diff l på 10 timmar! Från $thenLevel till $nowLevel liter."
+    msg="Läckagelarm: $diff l på 24 timmar! Från $thenLevel till $nowLevel liter."
     echo "`date '+%F %H:%M'` $msg" >> "$alarm_log"
     if [ `expr $(date +%s) - $(stat -c %Y "$locks/leak.lock")` -gt 3600 ]
     then
@@ -32,7 +32,7 @@ then
         echo "`date`    $msg" | mail -s "[Expansionskärl] $msg" "$email"
         touch "$locks/level1.lock"
     fi
-elif [ $nowLevel -lt 50 ]
+elif [ $nowLevel -lt 60 ]
 then
     msg="Låg nivå larm: $nowLevel l kvar!"
     echo "`date '+%F %H:%M'` $msg" >> "$alarm_log"
