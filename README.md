@@ -11,7 +11,7 @@ the sensor. Other connections are connected straight through.
 `apt install pigpio`
 
 # Configure
-Change the constants at the top of hc-sro4-pigpio.c to account for
+Change the constants in config.h to account for
 
 * gpio pins used for trig and echo
 * the volume of the barrel
