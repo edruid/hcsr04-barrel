@@ -3,13 +3,14 @@
 dir=`dirname "$0"`
 
 locks=${locks:-"$dir/locks"}
-file=${file:-"$dir/vattennivå.csv"}
+file=${file:-"$dir/data/$(date +%Y-%m).csv"}
+compareFile=${file:-"$dir/data/$(date -d '24 hours ago' +%Y-%m).csv"}
+compareDate=`date '+%F %H:%M' --date='24 hours ago'`
 alarm_log=${alarm_log:-"$dir/larm.log"}
 email=${email:-felanmalan@skrytetorp.se}
 
-compareDate=`date '+%F %H:%M' --date='24 hours ago'`
 nowLevel=`tail -n 5 "$file" | awk '{print $4}' | sort -n | head -n 3 | tail -n 1`
-thenLevel=`grep "$compareDate" -C 2 "$file" | awk '{print $4}' | sort -n | head -n 3 | tail -n 1`
+thenLevel=`grep "$compareDate" -C 2 "$compareFile" | awk '{print $4}' | sort -n | head -n 3 | tail -n 1`
 diff=`expr $nowLevel - $thenLevel`
 echo $diff
 
@@ -27,7 +28,7 @@ if [ $nowLevel -lt 40 ]
 then
     msg="Kritisk nivå larm: $nowLevel l kvar!"
     echo "`date '+%F %H:%M'` $msg" >> "$alarm_log"
-    if [ `expr $(date +%s) - $(stat -c %Y "$locks/level1.lock")` -gt  3600` ]
+    if [ `expr $(date +%s) - $(stat -c %Y "$locks/level1.lock")` -gt  3600 ]
     then
         echo "`date`    $msg" | mail -s "[Expansionskärl] $msg" "$email"
         touch "$locks/level1.lock"
@@ -36,7 +37,7 @@ elif [ $nowLevel -lt 60 ]
 then
     msg="Låg nivå larm: $nowLevel l kvar!"
     echo "`date '+%F %H:%M'` $msg" >> "$alarm_log"
-    if [ `expr $(date +%s) - $(stat -c %Y "$locks/level2.lock")` -gt  86400` ]
+    if [ `expr $(date +%s) - $(stat -c %Y "$locks/level2.lock")` -gt  86400 ]
     then
         echo "`date`    $msg" | mail -s "[Expansionskärl] $msg" "$email"
         touch "$locks/level2.lock"
