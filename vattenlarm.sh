@@ -12,7 +12,6 @@ email=${email:-felanmalan@skrytetorp.se}
 nowLevel=`tail -n 5 "$file" | awk '{print $4}' | sort -n | head -n 3 | tail -n 1`
 thenLevel=`grep "$compareDate" -C 2 "$compareFile" | awk '{print $4}' | sort -n | head -n 3 | tail -n 1`
 diff=`expr $nowLevel - $thenLevel`
-echo $diff
 
 if [ $diff -lt -50 ]
 then
