@@ -6,17 +6,18 @@ from pathlib import Path
 import subprocess
 import statistics
 
-locks = os.environ.get('locks', 'locks')
+dir = os.path.dirname(os.path.realpath(__file__))
+locks = os.environ.get('locks', dir + '/locks')
 file  = os.environ.get(
     'file',
-    'data/' + datetime.date.today().strftime('%Y-%m') + '.csv'
+    dir + '/data/' + datetime.date.today().strftime('%Y-%m') + '.csv'
 )
 compareFile  = os.environ.get(
     'file',
-    'data/' + (datetime.date.today() - datetime.timedelta(days=1)).strftime('%Y-%m') + '.csv'
+    dir + '/data/' + (datetime.date.today() - datetime.timedelta(days=1)).strftime('%Y-%m') + '.csv'
 )
 compareDate = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%F %H:%M')
-alarm_log = os.environ.get('alarm_log', 'larm.log')
+alarm_log = os.environ.get('alarm_log', dir + '/larm.log')
 emails = os.environ.get('email', 'felanmalan@skrytetorp.se').split(',')
 
 def runCmd(*cmd):
