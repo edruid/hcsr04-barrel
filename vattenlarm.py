@@ -64,7 +64,7 @@ def alarm(msg, freq, lock):
         f.write(t + '\t' + msg + '\n')
     if getLock(lock, freq):
         title = '[Expansionskärl] ' + msg
-        body = f"{t}    {msg}\n\nmättid - cm (ultra) - l (ultra) - cm (laser) - l (laser)"
+        body = f"{t}    {msg}\n\nmättid - mm (ultra) - l (ultra) - mm (laser) - l (laser)"
         for line in runCmd('tail', '-n', '5', file):
             body += line + '\n'
         mail(title, body, emails)
