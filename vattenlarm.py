@@ -37,16 +37,14 @@ def mail(title, body, recep):
         
 
 def meanLevel(lines):
-    ultr = []
-    laser = []
+    liter = []
     for line in lines:
         _, _, u, _, l = line.split('\t')
-        ultr.append(int(u))
-        laser.append(int(l))
-    laser = statistics.median(laser)
-    if laser != -1:
-        return laser
-    return statistics.median(ultr)
+        if l > 0:
+            lit.append(l)
+        else:
+            lit.append(u)
+    return statistics.median(liter)
         
 def getLock(lock, freq):
     lo = Path(lock)
@@ -64,7 +62,7 @@ def alarm(msg, freq, lock):
         f.write(t + '\t' + msg + '\n')
     if getLock(lock, freq):
         title = '[Expansionskärl] ' + msg
-        body = f"{t}    {msg}\n\nmättid - mm (ultra) - l (ultra) - mm (laser) - l (laser)"
+        body = f"{t}    {msg}\n\nmättid - mm (ultra) - l (ultra) - mm (laser) - l (laser)\n"
         for line in runCmd('tail', '-n', '5', file):
             body += line + '\n'
         mail(title, body, emails)
