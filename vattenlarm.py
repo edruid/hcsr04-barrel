@@ -43,9 +43,9 @@ def meanLevel(lines):
         u = int(u)
         l = int(l)
         if l > 0:
-            lit.append(l)
+            liter.append(l)
         else:
-            lit.append(u)
+            liter.append(u)
     return statistics.median(liter)
 
 def getLock(lock, freq):
