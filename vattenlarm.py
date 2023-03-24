@@ -34,18 +34,20 @@ def mail(title, body, recep):
         stdin=subprocess.PIPE
     ) as f:
         f.communicate(input=body.encode('utf-8'))
-        
+
 
 def meanLevel(lines):
     liter = []
     for line in lines:
         _, _, u, _, l = line.split('\t')
+        u = int(u)
+        l = int(l)
         if l > 0:
             lit.append(l)
         else:
             lit.append(u)
     return statistics.median(liter)
-        
+
 def getLock(lock, freq):
     lo = Path(lock)
     if not lo.exists():
