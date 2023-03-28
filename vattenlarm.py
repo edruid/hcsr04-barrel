@@ -70,26 +70,33 @@ def alarm(msg, freq, lock):
         mail(title, body, emails)
 
 
-lvl = meanLevel(runCmd('tail', '-n', '5', file))
-oldLvl = meanLevel(runCmd('grep', compareDate, '-C', '2', compareFile))
-diff = lvl - oldLvl
+try:
+    lvl = meanLevel(runCmd('tail', '-n', '5', file))
+    oldLvl = meanLevel(runCmd('grep', compareDate, '-C', '2', compareFile))
+    diff = lvl - oldLvl
 
-if diff < -50:
-    alarm(
-        f"Läckagelarm: {diff} l på 24 timmar! Från {oldLvl} till {lvl} liter.",
-        datetime.timedelta(hours=1),
-        locks + '/leak.lock'
+    if diff < -50:
+        alarm(
+            f"Läckagelarm: {diff} l på 24 timmar! Från {oldLvl} till {lvl} liter.",
+            datetime.timedelta(hours=1),
+            locks + '/leak.lock'
+        )
+    if lvl < 40:
+        alarm(
+            f'Kritisk nivå larm: {lvl} l kvar!',
+            datetime.timedelta(hours=1),
+            locks + '/level1.lock'
+        )
+    elif lvl < 60:
+        alarm(
+            f'Låg nivå larm: {lvl} l kvar!',
+            datetime.timedelta(days=1),
+            locks + '/level2.lock'
+        )
+except Exception as e:
+    mail(
+        f"[Expansionskärl] {type(e)}",
+        f"{type(e)} {e}",
+        emails
     )
-if lvl < 40:
-    alarm(
-        f'Kritisk nivå larm: {lvl} l kvar!',
-        datetime.timedelta(hours=1),
-        locks + '/level1.lock'
-    )
-elif lvl < 60:
-    alarm(
-        f'Låg nivå larm: {lvl} l kvar!',
-        datetime.timedelta(days=1),
-        locks + '/level2.lock'
-    )
-
+    raise
